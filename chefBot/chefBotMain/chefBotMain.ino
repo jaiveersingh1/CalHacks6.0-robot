@@ -7,7 +7,44 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 
 Servo pearlServo;
 Servo cupServo;
-Adafruit_DCMotor* pumpMotor = AFMS.getMotor(4);
+Adafruit_DCMotor* teaPump = AFMS.getMotor(4);
+
+const String CMD_DISPENSE_CUP = "DispenseCup";
+const String CMD_DISPENSE_PEARLS = "DispensePearls";
+const String CMD_DISPENSE_TEA = "DispenseTea";
+
+void dispenseCup() {
+  Serial.println("Dispensing Cup");
+
+  cupServo.write(180);
+  delay(500);
+  cupServo.write(0);
+  delay(500);
+
+  Serial.println("Cup Dispensed");
+}
+
+void dispensePearls() {
+  Serial.println("Dispensing Pearls");
+
+  pearlServo.write(180);
+  delay(500);
+  pearlServo.write(0);
+  delay(500);
+
+  Serial.println("Pearls Dispensed");
+}
+
+void dispenseTea() {
+  Serial.println("Dispensing Tea");
+
+  teaPump->setSpeed(255);
+  teaPump->run(FORWARD);
+  delay(500);
+  teaPump->run(RELEASE);
+
+  Serial.println("Tea Dispensed");
+}
 
 void setup() {
   Serial.begin(9600);           // set up Serial library at 9600 bps
@@ -22,17 +59,16 @@ void setup() {
 
 void loop() {
   if (Serial.available() > 0) {
-    String nextCommand = Serial.readString();
+    String cmd = Serial.readString();
 
-    if (nextCommand.equals("open")) {
-      Serial.print("opening\n");
-      pearlServo.write(180);
-    } else if (nextCommand.equals("close")) {
-      Serial.print("closing\n");
-      pearlServo.write(0);
+    if (cmd.equals(CMD_DISPENSE_CUP)) {
+      dispenseCup();
+    } else if (cmd.equals(CMD_DISPENSE_PEARLS)) {
+      dispensePearls();
+    } else if (cmd.equals(CMD_DISPENSE_TEA)) {
+      dispenseTea();
     } else {
-      String output = "unknown command " + nextCommand;
-      Serial.print(output);
+      Serial.println("Unknown command " + cmd);
     }
   }
 }
