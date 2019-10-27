@@ -59,5 +59,8 @@ while True:
         sendCommand(request, ACK_LEFT_TURN)
     elif cmd == CMD_RIGHT_TURN:
         sendCommand(request, ACK_RIGHT_TURN)
+    elif cmd == "clear":
+        ser.end()
+        exit()
     else:
         print("Unknown input", request)
