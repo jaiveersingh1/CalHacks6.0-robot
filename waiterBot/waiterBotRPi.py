@@ -1,7 +1,7 @@
 import requests
 import serial
 
-ser = serial.Serial('/dev/tty/ACM0', 9600)
+ser = serial.Serial('/dev/ttyACM0', 9600)
 # read from Arduino
 
 ser.write("forward")
