@@ -25,42 +25,57 @@ def sendCommand(request, ack):
         print("Expected:", list(ack))
         return False
 
-# def logic():
-#     DEBUG_MODE = False
-#     BASE_URL = 'https://8ea796c0.ngrok.io'
-#     states = ['DispenseCup', 'DispensePearls', 'DispenseTea']
-#     r = requests.get(BASE_URL + '/robots')
-#     r = r.json()[0] # create robot instance before this
-#                     # otherwise try catch
-#     current_state = r['state']
-#     while 1:
-#         if DEBUG_MODE:
-#             input()
-#         r = requests.get(BASE_URL + '/robots')
-#         r = r.json()[0] # create robot instance before this
-#         if current_state != r['state']: #TODO: create move robot function
-#             # your code here
-#             # check if robot is in correct position
-#             # change ack to True
-#             # master changes ack to False immediately after state is changed (or action commenced)
-#             requests.patch(BASE_URL + '/robots/' + r['id'], 
-#                 json = {'ack': True},
-#                 headers = {'Content-Type': 'application/json'})
-#         time.sleep(3)
+def logic():
+    DEBUG_MODE = False
+    BASE_URL = 'https://8ea796c0.ngrok.io'
+    states = ['DispenseCup', 'DispensePearls', 'DispenseTea']
+    r = requests.get(BASE_URL + '/robots')
+    r = r.json()[0] # create robot instance before this
+                    # otherwise try catch
+    current_state = r['state']
+    while 1:
+        if DEBUG_MODE:
+            input()
+        r = requests.get(BASE_URL + '/robots')
+        r = r.json()[0] # create robot instance before this
+        if current_state != r['state']:
+            # your code here
+            success = false
+            if r['state'] == states[0]: # DispenseCup
+                pass # we start in position already
+            elif r['state'] == states[1]: # DispensePearls
+                success = sendCommand("forward,800,true,", ACK_FORWARD)
+            elif r['state'] == states[2]: # DispenseTea
+                success = sendCommand("forward,150,true,", ACK_FORWARD)
+            
 
-while True:
-    request = input("Next command: ")
-    reqList = request.split(',')
-    cmd = reqList[0]
-    
-    if cmd == CMD_FORWARD:
-        sendCommand(request, ACK_FORWARD)
-    elif cmd == CMD_LEFT_TURN:
-        sendCommand(request, ACK_LEFT_TURN)
-    elif cmd == CMD_RIGHT_TURN:
-        sendCommand(request, ACK_RIGHT_TURN)
-    elif cmd == "clear":
-        ser.end()
-        exit()
-    else:
-        print("Unknown input", request)
+            # check if robot is in correct position
+            # change ack to True
+            # master changes ack to False immediately after state is changed (or action commenced)
+            if success:
+                requests.patch(BASE_URL + '/robots/' + r['id'], 
+                    json = {'ack': True},
+                    headers = {'Content-Type': 'application/json'})
+            else:
+                print("FATAL ERROR: Could not execute state " + r['state'])
+        time.sleep(3)
+
+def remoteControl():
+    while True:
+        request = input("Next command: ")
+        reqList = request.split(',')
+        cmd = reqList[0]
+        
+        if cmd == CMD_FORWARD:
+            sendCommand(request, ACK_FORWARD)
+        elif cmd == CMD_LEFT_TURN:
+            sendCommand(request, ACK_LEFT_TURN)
+        elif cmd == CMD_RIGHT_TURN:
+            sendCommand(request, ACK_RIGHT_TURN)
+        elif cmd == "clear":
+            ser.end()
+            exit()
+        else:
+            print("Unknown input", request)
+
+logic()
