@@ -24,6 +24,24 @@ def sendCommand(request, ack):
         print("Expected:", list(ack))
         return False
 
+def logic():
+    BASE_URL = 'https://8ea796c0.ngrok.io'
+    states = ['DispenseCup', 'DispensePearls', 'DispenseTea']
+    r = requests.get(BASE_URL + '/robots')
+    r = r.json()[0] # create robot instance before this
+                    # otherwise try catch
+    current_state = r['state']
+    while 1:
+        r = requests.get(BASE_URL + '/robots')
+        r = r.json()[0] # create robot instance before this
+        if current_state != r['state']: #TODO: create move robot function
+            # your code here
+
+            # change ack to False
+            requests.patch(BASE_URL + '/robots/' + r['id'], 
+                json = {'ack': False},
+                headers = {'Content-Type': 'application/json'})
+
 while True:
     request = input("Next command: ")
     reqList = request.split(',')
