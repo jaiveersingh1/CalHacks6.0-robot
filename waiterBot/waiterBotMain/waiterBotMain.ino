@@ -19,11 +19,17 @@ void drive(int leftPower, int rightPower) {
   analogWrite(RIGHT_MOTOR_PIN, (int) min(max(rightPower * RIGHT_MOTOR_SCALE, 0), 255));
 }
 
-void forward(int duration = 500) {
+void forward(int duration = 500, bool coast = false) {
   drive(127, 127);
 
   delay(duration);
 
+  if (coast) {
+    for (int i = 127; i > 0; i -= 20) {
+      drive(i, i);
+      delay(50);
+    }
+  }
   drive(0, 0);
   Serial.println(ACK_FORWARD);
 }
@@ -56,42 +62,44 @@ void setup() {
 }
 
 void loop() {
-  if (Serial.available() > 0) {
-    String request = Serial.readString();
-    int cmdIndex = request.indexOf(',');
-    if (cmdIndex == -1) {
-      Serial.println("Malformed request " + request);
-      continue;
-    }
+  while (true) {
+    if (Serial.available() > 0) {
+      String request = Serial.readString();
+      int cmdIndex = request.indexOf(',');
+      if (cmdIndex == -1) {
+        Serial.println("Malformed request " + request);
+        continue;
+      }
 
-    String cmd = request.substring(0, cmdIndex);
+      String cmd = request.substring(0, cmdIndex);
 
-    if (cmd.equals(CMD_FORWARD)) {
-      int distIndex = request.indexOf(',', cmdIndex);
-      if (distIndex == -1) {
-        Serial.println("Malformed forward command " + request);
-        continue;
+      if (cmd.equals(CMD_FORWARD)) {
+        int distIndex = request.indexOf(',', cmdIndex);
+        if (distIndex == -1) {
+          Serial.println("Malformed forward command " + request);
+          continue;
+        }
+        int distance = request.substring(cmdIndex, distIndex).toInt();
+        forward(distance);
+      } else if (cmd.equals(CMD_RIGHT_TURN)) {
+        int distIndex = request.indexOf(',', cmdIndex);
+        if (distIndex == -1) {
+          Serial.println("Malformed right turn command " + request);
+          continue;
+        }
+        int distance = request.substring(cmdIndex, distIndex).toInt();
+        rightTurn(distance);
+      } else if (cmd.equals(CMD_LEFT_TURN)) {
+        int distIndex = request.indexOf(',', cmdIndex);
+        if (distIndex == -1) {
+          Serial.println("Malformed left turn command " + request);
+          continue;
+        }
+        int distance = request.substring(cmdIndex, distIndex).toInt();
+        leftTurn(distance);
+      } else {
+        Serial.println("Unknown command " + cmd);
       }
-      int distance = request.substring(cmdIndex, distIndex).toInt();
-      forward(distance);
-    } else if (cmd.equals(CMD_RIGHT_TURN)) {
-      int distIndex = request.indexOf(',', cmdIndex);
-      if (distIndex == -1) {
-        Serial.println("Malformed right turn command " + request);
-        continue;
-      }
-      int distance = request.substring(cmdIndex, distIndex).toInt();
-      rightTurn(distance);
-    } else if (cmd.equals(CMD_LEFT_TURN)) {
-      int distIndex = request.indexOf(',', cmdIndex);
-      if (distIndex == -1) {
-        Serial.println("Malformed left turn command " + request);
-        continue;
-      }
-      int distance = request.substring(cmdIndex, distIndex).toInt();
-      leftTurn(distance);
-    } else {
-      Serial.println("Unknown command " + cmd);
     }
   }
 }
