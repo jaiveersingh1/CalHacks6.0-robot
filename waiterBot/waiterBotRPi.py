@@ -16,7 +16,7 @@ sleep(2) # wait for port to open correctly
 
 def sendCommand(command, ack):
     ser.write(command.encode("utf-8"))
-    response = ser.readline().decode("utf-8")[:-1]
+    response = ser.readline().decode("utf-8")[:-2]
     if response == ack:
         return True
     else:
