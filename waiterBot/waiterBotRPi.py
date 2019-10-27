@@ -2,6 +2,7 @@ import requests
 import serial
 from time import sleep
 
+DEBUG_MODE = False
 CMD_FORWARD = "forward"
 CMD_RIGHT_TURN = "right"
 CMD_LEFT_TURN = "left"
@@ -25,6 +26,7 @@ def sendCommand(request, ack):
         return False
 
 def logic():
+    DEBUG_MODE = False
     BASE_URL = 'https://8ea796c0.ngrok.io'
     states = ['DispenseCup', 'DispensePearls', 'DispenseTea']
     r = requests.get(BASE_URL + '/robots')
@@ -32,15 +34,19 @@ def logic():
                     # otherwise try catch
     current_state = r['state']
     while 1:
+        if DEBUG_MODE:
+            input()
         r = requests.get(BASE_URL + '/robots')
         r = r.json()[0] # create robot instance before this
         if current_state != r['state']: #TODO: create move robot function
             # your code here
-
-            # change ack to False
+            # check if robot is in correct position
+            # change ack to True
+            # master changes ack to False immediately after state is changed (or action commenced)
             requests.patch(BASE_URL + '/robots/' + r['id'], 
-                json = {'ack': False},
+                json = {'ack': True},
                 headers = {'Content-Type': 'application/json'})
+        time.sleep(3)
 
 while True:
     request = input("Next command: ")
