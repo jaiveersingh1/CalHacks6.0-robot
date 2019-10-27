@@ -12,7 +12,7 @@ ACK_RIGHT_TURN = "doneRight"
 ACK_LEFT_TURN = "doneLeft"
 
 
-ser = serial.Serial('/dev/ttyACM0', 9600)
+ser = serial.Serial('/dev/ttyACM1', 9600)
 sleep(2) # wait for port to open correctly
 
 def sendCommand(request, ack):
