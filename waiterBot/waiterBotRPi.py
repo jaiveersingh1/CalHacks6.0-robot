@@ -20,7 +20,7 @@ def sendCommand(command, ack):
     if response[:-1] == ack:
         return True
     else:
-        print("Received malformed ack:", response)
+        print("Received malformed ack:", response[:-1], "vs.", ack)
         return False
 
 while True:
