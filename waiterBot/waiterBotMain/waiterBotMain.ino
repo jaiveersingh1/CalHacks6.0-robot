@@ -47,9 +47,13 @@ void setup() {
 
   pinMode(LEFT_MOTOR_PIN, OUTPUT);
   pinMode(RIGHT_MOTOR_PIN, OUTPUT);
+
+  
 }
 
 void loop() {
+
+  Serial.println("hi");
   if (Serial.available() > 0) {
     String cmd = Serial.readString();
 
