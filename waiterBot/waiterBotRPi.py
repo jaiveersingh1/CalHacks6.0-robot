@@ -4,7 +4,7 @@ import serial
 ser = serial.Serial('/dev/ttyACM0', 9600)
 # read from Arduino
 
-ser.write("forward")
+ser.write("forward".encode("utf-8"))
 
 input = ser.read_until().decode("utf-8")
 
