@@ -52,19 +52,44 @@ void setup() {
   pinMode(LEFT_MOTOR_PIN, OUTPUT);
   pinMode(RIGHT_MOTOR_PIN, OUTPUT);
 
-  
+
 }
 
 void loop() {
   if (Serial.available() > 0) {
-    String cmd = Serial.readString();
+    String request = Serial.readString();
+    int cmdIndex = request.indexOf(',');
+    if (cmdIndex == -1) {
+      Serial.println("Malformed request " + request);
+      continue;
+    }
+
+    String cmd = request.substring(0, cmdIndex);
 
     if (cmd.equals(CMD_FORWARD)) {
-      forward();
+      int distIndex = request.indexOf(',', cmdIndex);
+      if (distIndex == -1) {
+        Serial.println("Malformed forward command " + request);
+        continue;
+      }
+      int distance = request.substring(cmdIndex, distIndex).toInt();
+      forward(distance);
     } else if (cmd.equals(CMD_RIGHT_TURN)) {
-      rightTurn();
+      int distIndex = request.indexOf(',', cmdIndex);
+      if (distIndex == -1) {
+        Serial.println("Malformed right turn command " + request);
+        continue;
+      }
+      int distance = request.substring(cmdIndex, distIndex).toInt();
+      rightTurn(distance);
     } else if (cmd.equals(CMD_LEFT_TURN)) {
-      leftTurn();
+      int distIndex = request.indexOf(',', cmdIndex);
+      if (distIndex == -1) {
+        Serial.println("Malformed left turn command " + request);
+        continue;
+      }
+      int distance = request.substring(cmdIndex, distIndex).toInt();
+      leftTurn(distance);
     } else {
       Serial.println("Unknown command " + cmd);
     }
