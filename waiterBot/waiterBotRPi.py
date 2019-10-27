@@ -44,8 +44,10 @@ def logic():
                 success = true # we start in position already
             elif r['state'] == states[1]: # DispensePearls
                 success = sendCommand("forward,800,true,", ACK_FORWARD)
+                # NOTE: 525 at 9V, 800 at 8V
             elif r['state'] == states[2]: # DispenseTea
                 success = sendCommand("forward,150,true,", ACK_FORWARD)
+                # NOTE: 50 at 9V, 150 at 8V
             
 
             # check if robot is in correct position
