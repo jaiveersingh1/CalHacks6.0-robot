@@ -27,7 +27,7 @@ def sendCommand(request, ack):
 
 def logic():
     DEBUG_MODE = False
-    BASE_URL = 'https://8ea796c0.ngrok.io'
+    BASE_URL = 'http://13.66.209.37:3000'
     states = ['DispenseCup', 'DispensePearls', 'DispenseTea']
     r = requests.get(BASE_URL + '/robots')
     r = r.json()[0] # create robot instance before this
@@ -39,9 +39,9 @@ def logic():
         if current_state != r['state']:
             current_state = r['state']
 
-            success = false
+            success = False
             if r['state'] == states[0]: # DispenseCup
-                success = true # we start in position already
+                success = True # we start in position already
             elif r['state'] == states[1]: # DispensePearls
                 success = sendCommand("forward,800,true,", ACK_FORWARD)
                 # NOTE: 525 at 9V, 800 at 8V
