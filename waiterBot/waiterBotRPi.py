@@ -33,13 +33,12 @@ def logic():
     r = r.json()[0] # create robot instance before this
                     # otherwise try catch
     current_state = r['state']
-    while 1:
-        if DEBUG_MODE:
-            input()
+    while True:
         r = requests.get(BASE_URL + '/robots')
         r = r.json()[0] # create robot instance before this
         if current_state != r['state']:
-            # your code here
+            current_state = r['state']
+
             success = false
             if r['state'] == states[0]: # DispenseCup
                 success = true # we start in position already
@@ -53,6 +52,9 @@ def logic():
             # change ack to True
             # master changes ack to False immediately after state is changed (or action commenced)
             if success:
+                if DEBUG_MODE:
+                    input() # hold for human verification
+                
                 requests.patch(BASE_URL + '/robots/' + r['id'], 
                     json = {'ack': True},
                     headers = {'Content-Type': 'application/json'})
