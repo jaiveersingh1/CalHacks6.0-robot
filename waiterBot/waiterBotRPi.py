@@ -8,6 +8,6 @@ ser.write("forward".encode("utf-8"))
 
 print("sent serial")
 
-input = ser.read_until().decode("utf-8")
+input = ser.readline()
 
 print("Read input " + input + " from Arduino")
