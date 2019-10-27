@@ -6,13 +6,8 @@ ser = serial.Serial('/dev/ttyACM0', 9600)
 
 ser.write("forward".encode("utf-8"))
 
-input = ser.read_until().decode("utf-8")
+print("sent serial")
 
-print ("Read input " + input + " from Arduino")
-        
-def main():
-    pass    
+input = ser.read().decode("utf-8")
 
-
-
-main()
+print("Read input " + input + " from Arduino")
