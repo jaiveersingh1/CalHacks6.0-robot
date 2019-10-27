@@ -75,12 +75,14 @@ void loop() {
 
       if (cmd.equals(CMD_FORWARD)) {
         int distIndex = request.indexOf(',', cmdIndex);
-        if (distIndex == -1) {
+        int coastIndex = request.indexOf(',', distIndex);
+        if (distIndex == -1 || coastIndex == -1) {
           Serial.println("Malformed forward command " + request);
           continue;
         }
         int distance = request.substring(cmdIndex, distIndex).toInt();
-        forward(distance);
+        bool coast = request.substring(distIndex, coastIndex).equals("true");
+        forward(distance, coast);
       } else if (cmd.equals(CMD_RIGHT_TURN)) {
         int distIndex = request.indexOf(',', cmdIndex);
         if (distIndex == -1) {
