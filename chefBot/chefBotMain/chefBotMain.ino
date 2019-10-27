@@ -28,8 +28,8 @@ void dispenseCup() {
   cupServo.write(90);
   delay(250);
   
-  cupServo.write(180);
-  delay(300);
+  cupServo.write(0);
+  delay(200);
   cupServo.write(90);
   
   Serial.println("Cup Dispensed");

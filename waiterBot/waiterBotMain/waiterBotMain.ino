@@ -74,8 +74,8 @@ void loop() {
       String cmd = request.substring(0, cmdIndex);
 
       if (cmd.equals(CMD_FORWARD)) {
-        int distIndex = request.indexOf(',', cmdIndex);
-        int coastIndex = request.indexOf(',', distIndex);
+        int distIndex = request.indexOf(',', cmdIndex + 1);
+        int coastIndex = request.indexOf(',', distIndex + 1);
         if (distIndex == -1 || coastIndex == -1) {
           Serial.println("Malformed forward command " + request);
           continue;
