@@ -7,6 +7,10 @@ const String CMD_FORWARD = "forward";
 const String CMD_RIGHT_TURN = "right";
 const String CMD_LEFT_TURN = "left";
 
+const String ACK_FORWARD = "doneForward";
+const String ACK_RIGHT_TURN = "doneRight";
+const String ACK_LEFT_TURN = "doneLeft";
+
 const double LEFT_MOTOR_SCALE = 1.0;
 const double RIGHT_MOTOR_SCALE = 0.80;
 
@@ -21,7 +25,7 @@ void forward(int duration = 500) {
   delay(duration);
 
   drive(0, 0);
-  Serial.println("Moved forward");
+  Serial.println(ACK_FORWARD);
 }
 
 void rightTurn(int duration = 500) {
@@ -30,7 +34,7 @@ void rightTurn(int duration = 500) {
   delay(duration);
 
   drive(0, 0);
-  Serial.println("Turned right");
+  Serial.println(ACK_RIGHT_TURN);
 }
 
 void leftTurn(int duration = 500) {
@@ -39,7 +43,7 @@ void leftTurn(int duration = 500) {
   delay(duration);
 
   drive(0, 0);
-  Serial.println("Turned left");
+  Serial.println(ACK_LEFT_TURN);
 }
 
 void setup() {
