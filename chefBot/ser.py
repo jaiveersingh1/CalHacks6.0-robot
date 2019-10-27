@@ -8,7 +8,7 @@ time.sleep(1)
 
 s = set()
 q = Queue()
-BASE_URL = 'https://8ea796c0.ngrok.io'
+BASE_URL = 'http://13.66.209.37:3000'
 states = ['DispenseCup', 'DispensePearls', 'DispenseTea']
 
 while 1:
