@@ -21,6 +21,7 @@ void forward(int duration = 500) {
   delay(duration);
 
   drive(0, 0);
+  Serial.println("Moved forward");
 }
 
 void rightTurn(int duration = 500) {
@@ -29,6 +30,7 @@ void rightTurn(int duration = 500) {
   delay(duration);
 
   drive(0, 0);
+  Serial.println("Turned right");
 }
 
 void leftTurn(int duration = 500) {
@@ -37,6 +39,7 @@ void leftTurn(int duration = 500) {
   delay(duration);
 
   drive(0, 0);
+  Serial.println("Turned left");
 }
 
 void setup() {
@@ -44,15 +47,6 @@ void setup() {
 
   pinMode(LEFT_MOTOR_PIN, OUTPUT);
   pinMode(RIGHT_MOTOR_PIN, OUTPUT);
-
-  pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(LED_BUILTIN, LOW);
-
-  delay(3000);
-  digitalWrite(LED_BUILTIN, HIGH);
-
-  delay(1000);
-  forward(3000);
 }
 
 void loop() {
