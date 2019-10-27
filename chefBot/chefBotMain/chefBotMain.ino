@@ -25,28 +25,12 @@ const String DBG_WRITE_PEARLS = "WritePearls";
 void dispenseCup() {
   Serial.println("Dispensing Cup");
 
-  cupServo.write(0);
-  delay(500);
+  cupServo.write(90);
+  delay(250);
   
-  cupServo.write(120);
-  delay(250);
-  cupServo.write(100);
-  delay(250);
-
-  cupServo.write(120);
-  delay(250);
-  cupServo.write(100);
-  delay(250);
-
-  cupServo.write(120);
-  delay(250);
-  cupServo.write(100);
-  delay(250);
-
-  cupServo.write(0);
-  delay(250);
-  cupServo.write(40);
-  delay(250);
+  cupServo.write(180);
+  delay(300);
+  cupServo.write(90);
   
   Serial.println("Cup Dispensed");
 }
