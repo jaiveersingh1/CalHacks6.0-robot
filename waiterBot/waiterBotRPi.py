@@ -16,11 +16,11 @@ sleep(2) # wait for port to open correctly
 
 def sendCommand(command, ack):
     ser.write(command.encode("utf-8"))
-    response = ser.readline().decode("utf-8")
-    if response[:-1] == ack:
+    response = ser.readline().decode("utf-8")[:-1]
+    if response == ack:
         return True
     else:
-        print("Received malformed ack:", response[:-1], "vs.", ack)
+        print("Received malformed ack:", response, "vs.", ack)
         return False
 
 while True:
