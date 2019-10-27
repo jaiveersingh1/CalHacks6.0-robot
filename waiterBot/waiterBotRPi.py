@@ -42,7 +42,7 @@ def logic():
             # your code here
             success = false
             if r['state'] == states[0]: # DispenseCup
-                pass # we start in position already
+                success = true # we start in position already
             elif r['state'] == states[1]: # DispensePearls
                 success = sendCommand("forward,800,true,", ACK_FORWARD)
             elif r['state'] == states[2]: # DispenseTea
