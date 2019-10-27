@@ -80,24 +80,26 @@ void loop() {
           Serial.println("Malformed forward command " + request);
           continue;
         }
-        int distance = request.substring(cmdIndex, distIndex).toInt();
-        bool coast = request.substring(distIndex, coastIndex).equals("true");
+        String distStr = request.substring(cmdIndex + 1, distIndex);
+        int distance = distStr.toInt();
+        String coastStr = request.substring(distIndex + 1, coastIndex);
+        bool coast = coastStr.equals("true");
         forward(distance, coast);
       } else if (cmd.equals(CMD_RIGHT_TURN)) {
-        int distIndex = request.indexOf(',', cmdIndex);
+        int distIndex = request.indexOf(',', cmdIndex + 1);
         if (distIndex == -1) {
           Serial.println("Malformed right turn command " + request);
           continue;
         }
-        int distance = request.substring(cmdIndex, distIndex).toInt();
+        int distance = request.substring(cmdIndex + 1, distIndex).toInt();
         rightTurn(distance);
       } else if (cmd.equals(CMD_LEFT_TURN)) {
-        int distIndex = request.indexOf(',', cmdIndex);
+        int distIndex = request.indexOf(',', cmdIndex + 1);
         if (distIndex == -1) {
           Serial.println("Malformed left turn command " + request);
           continue;
         }
-        int distance = request.substring(cmdIndex, distIndex).toInt();
+        int distance = request.substring(cmdIndex + 1, distIndex).toInt();
         leftTurn(distance);
       } else {
         Serial.println("Unknown command " + cmd);
