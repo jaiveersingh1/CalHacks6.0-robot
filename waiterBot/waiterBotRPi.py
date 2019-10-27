@@ -1,11 +1,13 @@
 import requests
 import serial
+from time import sleep
+
 
 ser = serial.Serial('/dev/ttyACM0', 9600)
-# read from Arduino
+
+sleep(2)
 
 ser.write("forward".encode("utf-8"))
-
 print("sent serial")
 
 while True:

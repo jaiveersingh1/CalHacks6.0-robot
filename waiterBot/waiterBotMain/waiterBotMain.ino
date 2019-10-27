@@ -52,8 +52,6 @@ void setup() {
 }
 
 void loop() {
-
-  Serial.println("hi");
   if (Serial.available() > 0) {
     String cmd = Serial.readString();
 
