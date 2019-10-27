@@ -14,8 +14,8 @@ ACK_LEFT_TURN = "doneLeft"
 ser = serial.Serial('/dev/ttyACM0', 9600)
 sleep(2) # wait for port to open correctly
 
-def sendCommand(command, ack):
-    ser.write(command.encode("utf-8"))
+def sendCommand(request, ack):
+    ser.write(request.encode("utf-8"))
     response = ser.readline().decode("utf-8")[:-2]
     if response == ack:
         return True
@@ -25,13 +25,15 @@ def sendCommand(command, ack):
         return False
 
 while True:
-    cmd = input("Next command: ")
+    request = input("Next command: ")
+    reqList = request.split(',')
+    cmd = reqList[0]
     
     if cmd == CMD_FORWARD:
-        sendCommand(CMD_FORWARD, ACK_FORWARD)
+        sendCommand(request, ACK_FORWARD)
     elif cmd == CMD_LEFT_TURN:
-        sendCommand(CMD_LEFT_TURN, ACK_LEFT_TURN)
+        sendCommand(request, ACK_LEFT_TURN)
     elif cmd == CMD_RIGHT_TURN:
-        sendCommand(CMD_RIGHT_TURN, ACK_RIGHT_TURN)
+        sendCommand(request, ACK_RIGHT_TURN)
     else:
         print("Unknown input", input)
